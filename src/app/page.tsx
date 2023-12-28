@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef } from "react";
+
 import {
   ChakraProvider,
   extendTheme,
@@ -24,6 +25,17 @@ import Hero from "@/components/HeroThreeCol";
 import ThreeColumnSection from "@/components/HeroThreeCol-2";
 import TemplateSection from "@/components/HeroSection";
 
+declare module "@emotion/react" {
+  export interface Theme {
+    colors: {
+      darkBlue: string;
+      softOrange: string;
+      mutedGreen: string;
+      softPink: string;
+    };
+  }
+}
+
 const chakraTheme = extendTheme({
   colors: {
     darkBlue: "#2A3D66",
@@ -35,7 +47,7 @@ const chakraTheme = extendTheme({
 
 const Home = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
+  const btnRef = useRef<HTMLButtonElement>(null); // Correctly typed ref for a button
 
   return (
     <ChakraProvider theme={chakraTheme}>
