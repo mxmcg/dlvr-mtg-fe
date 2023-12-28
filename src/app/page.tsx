@@ -1,95 +1,94 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
 
-export default function Home() {
+import React, { useState } from "react";
+import {
+  ChakraProvider,
+  extendTheme,
+  Flex,
+  Box,
+  Button,
+  IconButton,
+  Drawer,
+  DrawerBody,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { IoMdMenu } from "react-icons/io";
+
+import TopSection from "@/components/TopSection";
+import Sidebar from "@/components/Sidebar";
+import Footer from "@/components/Footer";
+import Hero from "@/components/HeroThreeCol";
+import ThreeColumnSection from "@/components/HeroThreeCol-2";
+import TemplateSection from "@/components/HeroSection";
+
+const chakraTheme = extendTheme({
+  colors: {
+    darkBlue: "#2A3D66",
+    softOrange: "#FFAB76",
+    mutedGreen: "#6A8D73",
+    softPink: "#DAA6B1",
+  },
+});
+
+const Home = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = React.useRef();
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+    <ChakraProvider theme={chakraTheme}>
+      <Flex>
+        <IconButton
+          ref={btnRef}
+          onClick={onOpen}
+          position="fixed"
+          p={"2rem"}
+          zIndex="20"
+          icon={<IoMdMenu size="48px" />} // Adjust the size as needed
+          aria-label="Open Menu"
+          variant="ghost" // Removes border and background
+          color="white" // Sets the icon color to white
+          _hover={{
+            bg: "transparent", // Maintain transparent background on hover
+            color: "white", // Maintain white color on hover
+          }}
         />
-      </div>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Drawer
+          isOpen={isOpen}
+          placement="left"
+          onClose={onClose}
+          finalFocusRef={btnRef}
         >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+          <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerBody>
+              <Sidebar />
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
+        <Box as="main" flex="1" overflowY="auto" minW={0}>
+          <TopSection />
+          <Box>
+            <TemplateSection />
+          </Box>
+          <Box id="about-section">
+            <Hero />
+          </Box>
+          <Box id="portfolio-section">
+            <ThreeColumnSection />
+          </Box>
+          <Box id="about-section">
+            <Hero />
+          </Box>
+          <Footer />
+        </Box>
+      </Flex>
+    </ChakraProvider>
+  );
+};
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+export default Home;
