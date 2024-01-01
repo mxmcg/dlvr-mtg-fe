@@ -1,10 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-// Styled components
 const FooterContainer = styled.footer(({ theme }) => ({
-  backgroundColor: theme.colors.darkBlue, // Blue background for the footer
-  color: "white", // White text for contrast
+  backgroundColor: theme.colors.darkBlue,
+  color: "white",
   padding: "20px",
   textAlign: "center",
 }));
@@ -15,7 +14,6 @@ const FooterText = styled.p({
   fontSize: "14px",
 });
 
-// Component
 const Footer = () => {
   return (
     <FooterContainer>

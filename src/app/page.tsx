@@ -7,23 +7,16 @@ import {
   extendTheme,
   Flex,
   Box,
-  Button,
-  IconButton,
-  Drawer,
-  DrawerBody,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import { IoMdMenu } from "react-icons/io";
 
 import TopSection from "@/components/TopSection";
-import Sidebar from "@/components/Sidebar";
+
 import Footer from "@/components/Footer";
 import Hero from "@/components/HeroThreeCol";
-import ThreeColumnSection from "@/components/HeroThreeCol-2";
 import TemplateSection from "@/components/HeroSection";
+import HalfSection from "@/components/HalfSection";
+import HeroWithBackground from "@/components/HeroWithBackground";
 
 declare module "@emotion/react" {
   export interface Theme {
@@ -46,55 +39,34 @@ const chakraTheme = extendTheme({
 });
 
 const Home = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = useRef<HTMLButtonElement>(null); // Correctly typed ref for a button
+  const btnRef = useRef<HTMLButtonElement>(null);
 
   return (
     <ChakraProvider theme={chakraTheme}>
       <Flex>
-        <IconButton
-          ref={btnRef}
-          onClick={onOpen}
-          position="fixed"
-          p={"2rem"}
-          zIndex="20"
-          icon={<IoMdMenu size="48px" />} // Adjust the size as needed
-          aria-label="Open Menu"
-          variant="ghost" // Removes border and background
-          color="white" // Sets the icon color to white
-          _hover={{
-            bg: "transparent", // Maintain transparent background on hover
-            color: "white", // Maintain white color on hover
-          }}
-        />
-
-        <Drawer
-          isOpen={isOpen}
-          placement="left"
-          onClose={onClose}
-          finalFocusRef={btnRef}
-        >
-          <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerBody>
-              <Sidebar />
-            </DrawerBody>
-          </DrawerContent>
-        </Drawer>
-
         <Box as="main" flex="1" overflowY="auto" minW={0}>
           <TopSection />
           <Box>
             <TemplateSection />
           </Box>
+          <Box>
+            <HalfSection
+              imageSrc={"croppedDev.jpeg"}
+              paragraphText={
+                "Since 2015, Max McGee has been building software for clients across the globe. Primarily focused on Full Stack Web Engineering, Max has also built mobile applications for iOS and Android using React Native."
+              }
+              headingText={"About us"}
+            />
+          </Box>
           <Box id="about-section">
             <Hero />
           </Box>
-          <Box id="portfolio-section">
-            <ThreeColumnSection />
-          </Box>
-          <Box id="about-section">
-            <Hero />
+          <Box>
+            <HeroWithBackground
+              backgroundImage="beachscape.jpg"
+              headingText="Inquire Below"
+              subtitleText="maxmcgeedev@gmail.com"
+            />
           </Box>
           <Footer />
         </Box>
