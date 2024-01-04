@@ -21,7 +21,7 @@ const Header = styled.header(({ theme }) => ({
   flexDirection: "row",
   alignItems: "center",
   textAlign: "center",
-  position: "fixed",
+  // position: "fixed",
   top: 0,
   left: 0,
   right: 0,
@@ -126,7 +126,6 @@ const TopSection = () => {
             </DrawerBody>
           </DrawerContent>
         </Drawer>
-        <VinylRecord />
       </Header>
     </>
   );

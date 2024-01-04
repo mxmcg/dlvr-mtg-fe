@@ -1,14 +1,24 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
+import { ApolloProvider } from "@apollo/client";
+import apolloClient from "../lib/client";
+
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+
+// Adds messages only in a dev environment
+loadDevMessages();
+loadErrorMessages();
 
 import {
   ChakraProvider,
   extendTheme,
   Flex,
   Box,
+  Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useQuery, gql } from "@apollo/client";
 
 import TopSection from "@/components/TopSection";
 
@@ -17,6 +27,8 @@ import Hero from "@/components/HeroThreeCol";
 import TemplateSection from "@/components/HeroSection";
 import HalfSection from "@/components/HalfSection";
 import HeroWithBackground from "@/components/HeroWithBackground";
+import MortgageCalculator from "@/components/MortgageCalculator";
+import LoginPage from "@/components/LoginPage";
 
 declare module "@emotion/react" {
   export interface Theme {
@@ -39,39 +51,44 @@ const chakraTheme = extendTheme({
 });
 
 const Home = () => {
-  const btnRef = useRef<HTMLButtonElement>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
 
   return (
-    <ChakraProvider theme={chakraTheme}>
-      <Flex>
-        <Box as="main" flex="1" overflowY="auto" minW={0}>
-          <TopSection />
-          <Box>
-            <TemplateSection />
+    <ApolloProvider client={apolloClient}>
+      <ChakraProvider theme={chakraTheme}>
+        <Flex>
+          <Box as="main" flex="1" overflowY="auto" minW={0}>
+            <TopSection />
+            {isLoggedIn ? (
+              <Text p="4" color="green.500">
+                You are logged in!
+              </Text>
+            ) : (
+              <Text p="4" color="red.500">
+                You are not logged in.
+              </Text>
+            )}
+            <Box mt="4" px="4">
+              <MortgageCalculator />
+            </Box>
+
+            <Box>
+              <HeroWithBackground
+                backgroundImage="beachscape.jpg"
+                headingText="Inquire Below"
+                subtitleText="maxmcgeedev@gmail.com"
+              />
+            </Box>
+            <Footer />
           </Box>
-          <Box>
-            <HalfSection
-              imageSrc={"croppedDev.jpeg"}
-              paragraphText={
-                "Since 2015, Max McGee has been building software for clients across the globe. Primarily focused on Full Stack Web Engineering, Max has also built mobile applications for iOS and Android using React Native."
-              }
-              headingText={"About us"}
-            />
-          </Box>
-          <Box id="about-section">
-            <Hero />
-          </Box>
-          <Box>
-            <HeroWithBackground
-              backgroundImage="beachscape.jpg"
-              headingText="Inquire Below"
-              subtitleText="maxmcgeedev@gmail.com"
-            />
-          </Box>
-          <Footer />
-        </Box>
-      </Flex>
-    </ChakraProvider>
+        </Flex>
+      </ChakraProvider>
+    </ApolloProvider>
   );
 };
 
